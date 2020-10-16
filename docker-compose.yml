@@ -1,0 +1,18 @@
+# sudo mkdir nexus-data && sudo  chown -R 200 nexus-data
+version: "3.3"
+services:
+   nexus2:
+     image: sonatype/nexus:2.14.19-01
+     container_name: nexus2
+     volumes:
+       - $PWD/nexus-data:/sonatype-work
+     ports:
+        - "8081:8081" 
+     environment:
+       - MAX_HEAP=1g 
+       - CONTEXT_PATH=/nexus
+       - TZ=Asia/Taipei
+         #       - JAVA_OPTS="  -server -XX:MaxPermSize=192m -Djava.net.preferIPv4Stack=true  -Dfile.encoding=UTF-8  -Dsun.jnu.encoding=UTF-8  "
+
+
+
