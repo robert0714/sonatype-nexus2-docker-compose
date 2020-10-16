@@ -4,6 +4,7 @@ services:
    nexus2:
      image: sonatype/nexus:2.14.19-01
      container_name: nexus2
+     restart: always
      volumes:
        - $PWD/nexus-data:/sonatype-work
      ports:
