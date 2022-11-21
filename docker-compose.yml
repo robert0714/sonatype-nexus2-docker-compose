@@ -2,7 +2,7 @@
 version: "3.3"
 services:
    nexus2:
-     image: sonatype/nexus:2.14.19-01
+     image: sonatype/nexus:2.15.1-02
      container_name: nexus2
      restart: always
      volumes:
