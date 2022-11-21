@@ -1,0 +1,90 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name:  nexus2
+  labels:
+    app:  nexus2
+    version: m1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  nexus2
+  template:
+    metadata:
+      labels:
+        app:  nexus2
+        version: m1
+      annotations: 
+        sidecar.istio.io/inject: 'true'
+    spec:
+      volumes:        
+        - name: nexus2-data
+          persistentVolumeClaim:
+            claimName: nexus2-data
+      containers:
+      - name:  nexus2
+        image: sonatype/nexus:2.15.1-02
+#        image: sonatype/nexus:latest
+        # imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent         
+        volumeMounts: 
+          - name: nexus2-data
+            mountPath: /sonatype-work
+        ports:
+            - containerPort: 8081
+              protocol: TCP     
+        env:
+        - name: MEMORY_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              containerName:  nexus2
+              resource: requests.memory
+        - name: MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName:  nexus2
+              resource: limits.memory
+        - name: MAX_HEAP
+          value: '1g'
+        - name: CONTEXT_PATH
+          value: '/nexus' 
+        - name: TZ
+          value: 'Asia/Taipei'        
+        resources:
+          requests: 
+            memory: 1Gi
+            cpu: 500m
+          limits: 
+            memory: 1536Mi
+            cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nexus2
+    service: nexus2
+  name: nexus2
+spec: 
+  ports:
+    - name: tcp-remote
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: nexus2
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus2-data
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
