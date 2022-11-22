@@ -1,5 +1,8 @@
-# sonatype-nexus2-docker-compose
+# Nexus 3 OSS Kubernetes Operator
+* source code: https://github.com/m88i/nexus-operator
+* operator.io:  https://operatorhub.io/operator/nexus-operator-m88i
 
+# sonatype-nexus2-docker-compose
 ~/.m2/settings.xml
 ```xml
 <settings
@@ -210,3 +213,4 @@
 </settings>
 
 ```
+
