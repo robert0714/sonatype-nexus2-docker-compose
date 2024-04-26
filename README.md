@@ -80,7 +80,7 @@ services:
 ```
 * when specific url
 ```bash
-mvn clean deploy:deplo  -DaltDeploymentRepository=nexus3::default::http://localhost:8081/nexus/repository/maven-snapshots/
+mvn clean deploy -DaltDeploymentRepository=nexus3::default::http://localhost:8081/nexus/repository/maven-snapshots/
 ```
 # sonatype-nexus2-docker-compose
 * Copy the file ``${project}/settings.xml`` to your ``${your Home Directory}/.m2/settings.xml`` 
