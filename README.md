@@ -2,215 +2,147 @@
 * source code: https://github.com/m88i/nexus-operator
 * operator.io:  https://operatorhub.io/operator/nexus-operator-m88i
 
-# sonatype-nexus2-docker-compose
-~/.m2/settings.xml
+# sonatype-nexus3-docker-compose
+* docker-compose.yml refer: `https://hub.docker.com/r/sonatype/nexus3/`
+```yaml
+version: "3.3"
+services:
+   nexus2:
+     image: sonatype/nexus3:3.67.1-java8
+     container_name: nexus3
+     restart: always
+     volumes:
+       - $PWD/nexus-data:/nexus-data
+     ports:
+        - "8081:8081" 
+     environment:
+       - MAX_HEAP=1g 
+       - NEXUS_CONTEXT=nexus
+       - INSTALL4J_ADD_VM_PARAMS=-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m
+       - TZ=Asia/Taipei
+```
+* Copy the file ``${project}/settings.xml`` to your ``${your Home Directory}/.m2/settings.xml`` 
 ```xml
-<settings
-	xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
-	<pluginGroups>
-		<pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
-	</pluginGroups>
-	<profiles>
-		<profile>
-			<id>sonar</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Optional URL to server. Default value is http://localhost:9000 -->
-				<sonar.host.url>http://sonarqube-sonarqube.apps.ocp.iisi.test</sonar.host.url>
-			</properties>
-			<repositories>
-                                <!--
-                                <repository>
-                                        <id>CHT</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD200542-a-m/PDC/_packaging/CHT/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>                           
-                                <repository>
-                                        <id>bcrm2</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD200542-a-m/_packaging/bcrm2/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                                <repository>
-                                        <id>CHT5</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD200542-a-m/PDC/_packaging/CHT5/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                                -->
-<repository>
-  <id>nexus2</id>
-  <url>http://nexus2-d210641.apps.ocp.iisi.test/nexus/content/groups/public/</url>
-  <releases>
-    <enabled>true</enabled>
-  </releases>
-  <snapshots>
-    <enabled>true</enabled>
-  </snapshots>
-</repository>
-                                <repository>
-                                        <id>jboss.community</id>
-                                        <url>https://repository.jboss.org/nexus/content/repositories/public/</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                                <repository>
-                                        <id>redhat-ga-repository</id>
-                                        <url>https://maven.repository.redhat.com/ga/</url>
-                                        <releases>
-                                               <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                                <repository>
-                                        <id>maven2</id>
-                                        <url>https://repo1.maven.org/maven2/</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                                <repository>
-                                <id>spring-release</id>
-                                <name>Spring release</name>
-                                <url>https://repo.spring.io/release</url>
-                            </repository>
-                                <repository>
-                                  <id>spring-milestones</id>
-                                  <name>Spring Milestones</name>
-                                  <url>https://repo.spring.io/milestone</url>
-                                </repository>
-                        </repositories>
-                        <pluginRepositories>
-<!--
-                                <pluginRepository>
-                                        <id>CHT</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD200542-a-m/PDC/_packaging/CHT/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                <pluginRepository>
-                                        <id>bcrm2</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD200542-a-m/_packaging/bcrm2/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                        -->
-                               <pluginRepository>
-                                        <id>CHT_WildFly</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD210641-a/CHT_WildFly/_packaging/CHT_WildFly/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                <pluginRepository>
-                                        <id>CHT_WildFly2</id>
-                                        <url>https://pkgs.dev.azure.com/iisiD210641-a/CHT_WildFly/_packaging/CHT_WildFly2/maven/v1</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-
-                                <pluginRepository>
-                                        <id>jboss.community</id>
-                                        <url>https://repository.jboss.org/nexus/content/repositories/public/</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                <pluginRepository>
-                                        <id>redhat-ga-repository</id>
-                                        <url>https://maven.repository.redhat.com/ga/</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                <pluginRepository>
-                                        <id>maven2</id>
-                                        <url>https://repo1.maven.org/maven2/</url>
-                                        <releases>
-                                                <enabled>true</enabled>
-                                        </releases>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                <pluginRepository>
-                                <id>spring-release</id>
-                                <name>Spring release</name>
-                                <url>https://repo.spring.io/release</url>
-                            </pluginRepository>
-                                <pluginRepository>
-                                  <id>spring-milestones</id>
-                                  <name>Spring Milestones</name>
-                                  <url>https://repo.spring.io/milestone</url>
-                                </pluginRepository>
-                        </pluginRepositories>
-                </profile>
-        </profiles>
-         <servers>
-         <!--
-                <server>
-                  <id>CHT</id>
-                  <username>2009007</username>
-                  <password>73aveivyl4ffrcznayq2oyvlam4uskaw7wr3ynjcdwivmwm265ua</password>
-                </server>
-                -->
-        </servers>
-        <mirrors>
+<settings>
+    <pluginGroups>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties> 
+            </properties>
+            <repositories>
+				<repository>
+				   <id>nexus3</id>
+				   <url>http://localhost:8081/nexus/content/groups/public/</url>
+				   <releases>
+					  <enabled>true</enabled>
+				   </releases>
+				   <snapshots>
+					  <enabled>true</enabled>
+				   </snapshots>
+				</repository>
+			 </repositories>
+			 <pluginRepositories>
+				<pluginRepository>
+				   <id>nexus3</id>
+				   <url>http://localhost:8081/nexus/content/groups/public/</url>
+				   <releases>
+					  <enabled>true</enabled>
+				   </releases>
+				   <snapshots>
+					  <enabled>true</enabled>
+				   </snapshots>
+				</pluginRepository>
+			 </pluginRepositories>
+        </profile>
+     </profiles>
+     <mirrors>
+             <mirror>
+                <id>nexus3</id>
+                <mirrorOf>external:http:*</mirrorOf>
+                <url>http://localhost:8081/nexus/content/groups/public/</url>
+                <blocked>false</blocked>
+            </mirror> 
+      </mirrors> 
+    <servers>
+      <server>
+        <id>nexus3</id>
+        <username>admin</username>
+        <password>admin123</password>
+     </server>
+    </servers>
+</settings>
+```
+* when specific url
+```bash
+mvn clean deploy -DaltDeploymentRepository=nexus2::default::http://localhost:8081/nexus/content/repositories/snapshots/'
+```
+# sonatype-nexus2-docker-compose
+* Copy the file ``${project}/settings.xml`` to your ``${your Home Directory}/.m2/settings.xml`` 
+```xml
+<settings>
+    <pluginGroups>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>http://192.168.62.37/sonar</sonar.host.url>
+            </properties>
+            <repositories>
+				<repository>
+				   <id>nexus2</id>
+				   <url>http://192.168.62.37/nexus/content/groups/public/</url>
+				   <releases>
+					  <enabled>true</enabled>
+				   </releases>
+				   <snapshots>
+					  <enabled>true</enabled>
+				   </snapshots>
+				</repository>
+			 </repositories>
+			 <pluginRepositories>
+				<pluginRepository>
+				   <id>nexus2</id>
+				   <url>http://192.168.62.37/nexus/content/groups/public/</url>
+				   <releases>
+					  <enabled>true</enabled>
+				   </releases>
+				   <snapshots>
+					  <enabled>true</enabled>
+				   </snapshots>
+				</pluginRepository>
+			 </pluginRepositories>
+        </profile>
+     </profiles>
+     <mirrors>
              <mirror>
                 <id>nexus2</id>
-               <mirrorOf>external:http:*</mirrorOf>
-                <url>http://nexus2-d210641.apps.ocp.iisi.test/nexus/content/groups/public/</url>
+                <mirrorOf>external:http:*</mirrorOf>
+                <url>http://192.168.62.37/nexus/content/groups/public/</url>
                 <blocked>false</blocked>
-            </mirror>
-       </mirrors>
+            </mirror> 
+      </mirrors> 
+    <servers>
+      <server>
+        <id>nexus2</id>
+        <username>admin</username>
+        <password>admin123</password>
+     </server>
+    </servers>
 </settings>
-
 ```
-
+* when specific url
+```bash
+mvn clean deploy -DaltDeploymentRepository=nexus2::default::http://192.168.62.37/nexus/content/repositories/snapshots/'
+```
